@@ -11,7 +11,7 @@ public class TestListaEnlazadaGenerica {
 		vector[2] = new Estudiante("Jorge", "Lopez", "2E", "jorgel@gmail.com", "55");
 		vector[3] = new Estudiante("Blanca", "Perez", "4B", "blancap@gmail.com", "19");
 		
-		ListaEnlazadaGenerica<Estudiante> l = new ListaEnlazadaGenerica<Estudiante>();
+		ListaGenerica<Estudiante> l = new ListaEnlazadaGenerica<Estudiante>();
 		for(int i = 0; i < 4; i++) {
 			l.agregarFinal(vector[i]);
 		}
