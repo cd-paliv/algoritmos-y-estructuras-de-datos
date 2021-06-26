@@ -30,7 +30,7 @@ public class BuscadorCaminoMasCortoCaperucita {
 	public ListaGenerica<String> recorridoMasCortoYSeguro(){
 		ListaGenerica<String> resultado = new ListaEnlazadaGenerica<String>();
 		
-		Vertice<String> v = buscarVSalida(); //busco casa caperucita
+		Vertice<String> v = buscarVSalida();
 		if(v != null) {
 			ListaGenerica<String> caminoAct = new ListaEnlazadaGenerica<String>();
 			boolean[] marca = new boolean[bosque.listaDeVertices().tamanio() + 1];
@@ -41,12 +41,12 @@ public class BuscadorCaminoMasCortoCaperucita {
 		return resultado;
 	}
 	
-	private Vertice<String> buscarVSalida(){
+	private Vertice<String> buscarVSalida(){ //busco casa caperucita
 		boolean encontre = false;
 		Vertice<String> v = null;
 		ListaGenerica<Vertice<String>> lisV = bosque.listaDeVertices();
 		lisV.comenzar();
-		while(! lisV.fin() && (! encontre)) {
+		while(! lisV.fin() && (! encontre)) { //busco en todos los vertices
 			v = lisV.proximo();
 			if(v.dato() == "Casa de Caperucita") {
 				encontre = true;
