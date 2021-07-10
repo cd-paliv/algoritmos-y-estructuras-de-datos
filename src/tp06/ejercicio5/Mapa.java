@@ -119,6 +119,7 @@ public class Mapa {
 										boolean[] visitados, String destino) {
 		caminoAct.agregarFinal(vAct.dato());
 		visitados[vAct.getPosicion()] = true;
+		
 		if(vAct.dato().equals(destino)) {
 			if((caminoMin.esVacia()) || (caminoMin.tamanio() > caminoAct.tamanio())) { //si encontre un nuevo min
 				caminoMin.eliminarTodos();
@@ -195,13 +196,14 @@ public class Mapa {
 	public ListaGenerica<String> caminoConMenorCargaDeCombustible(String ciudad1, String ciudad2, int tanqueAuto){
 		ListaGenerica<String> caminoMenosCombustible = new ListaEnlazadaGenerica<String>();
 		if(! mapaCiudades.esVacio()) {
+			int[] menorCarga = { 15 };
 			ListaGenerica<Vertice<String>> listaVertices = mapaCiudades.listaDeVertices();
 			boolean[] visitados = new boolean[listaVertices.tamanio() + 1];
 			listaVertices.comenzar();
 			while(! listaVertices.fin()) {
 				Vertice<String> vIni = listaVertices.proximo();
 				if(vIni.dato().equals(ciudad1)) {
-					caminoConMenorCargaDeCombustible(vIni, mapaCiudades, new ListaEnlazadaGenerica<String>(), caminoMenosCombustible, visitados, ciudad2, tanqueAuto);
+					caminoConMenorCargaDeCombustible(vIni, mapaCiudades, new ListaEnlazadaGenerica<String>(), caminoMenosCombustible, visitados, ciudad2, tanqueAuto, tanqueAuto, 1, menorCarga);
 					break;
 				}
 			}
@@ -209,27 +211,38 @@ public class Mapa {
 		return caminoMenosCombustible;
 	}
 	private void caminoConMenorCargaDeCombustible(Vertice<String> vAct, Grafo<String> grafo, ListaGenerica<String> caminoAct,
-															ListaGenerica<String> caminoGastoMin, boolean[] visitados, String destino, int tanque) {
+														ListaGenerica<String> caminoGastoMin, boolean[] visitados, String destino,
+														int tanqueLleno, int tanqueAct, int cargas, int[] menorCarga) { //paso menorcarga en array para que sea dinamico
 		caminoAct.agregarFinal(vAct.dato());
 		visitados[vAct.getPosicion()] = true;
 		if(vAct.dato().equals(destino)) {
-			if((caminoGastoMin.esVacia()) || (caminoGastoMin.tamanio() > caminoAct.tamanio())) { //si encontre un nuevo min
+			if(cargas < menorCarga[0]) { //si encontre un nuevo min
+				menorCarga[0] = cargas; //actualizo
 				caminoGastoMin.eliminarTodos();
 				caminoAct.comenzar();
 				while(! caminoAct.fin()) {
 					caminoGastoMin.agregarFinal(caminoAct.proximo()); //lo reemplazo
 				}
 			}
+		} else {
+			//visitados[vAct.getPosicion()] = true;
+			ListaGenerica<Arista<String>> listaAdy = grafo.listaDeAdyacentes(vAct);
+			listaAdy.comenzar();
+			while(! listaAdy.fin()) {
+				Arista<String> ari = listaAdy.proximo();
+				Vertice<String> vSig = ari.verticeDestino();
+				if((! visitados[vSig.getPosicion()]) && (ari.peso() < tanqueLleno)) { 
+					if(tanqueAct < ari.peso()) { //si la cant de nafta que tengo es menor que la que tengo que gastar
+						caminoConMenorCargaDeCombustible(vSig, grafo, caminoAct, caminoGastoMin, visitados, destino, tanqueLleno, tanqueAct - ari.peso(), cargas + 1, menorCarga); //cargo nafta
+					} else {
+						caminoConMenorCargaDeCombustible(vSig, grafo, caminoAct, caminoGastoMin, visitados, destino, tanqueLleno, tanqueAct - ari.peso(), cargas, menorCarga);
+					}
+				}
+			}
+			
+			visitados[vAct.getPosicion()] = false;
 		}
 		
-		ListaGenerica<Arista<String>> listaAdy = grafo.listaDeAdyacentes(vAct);
-		listaAdy.comenzar();
-		while(! listaAdy.fin()) {
-			Arista<String> ari = listaAdy.proximo();
-			Vertice<String> vSig = ari.verticeDestino();
-			if(! visitados[vSig.getPosicion()]) { //TERMINARARARARARARAR
-				
-			}
-		}
+		caminoAct.eliminarEn(caminoAct.tamanio());
 	}
 }

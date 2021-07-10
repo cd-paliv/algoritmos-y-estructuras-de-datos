@@ -18,7 +18,7 @@ public class BuscadorCaminoMasCortoCaperucitaTest {
 		Vertice<String> vClaro5 = new VerticeImplListAdy<String>("Claro 5"); grafo.agregarVertice(vClaro5);
 		Vertice<String> vCasaA = new VerticeImplListAdy<String>("Casa Abuelita"); grafo.agregarVertice(vCasaA);
 		
-		//grafo.conectar(vCasaC, vClaro1, 3);
+		grafo.conectar(vCasaC, vClaro1, 3);
 		grafo.conectar(vClaro1, vClaro2, 4); grafo.conectar(vClaro1, vClaro5, 3);
 		grafo.conectar(vCasaC, vClaro2, 4); grafo.conectar(vClaro2, vClaro4, 10);grafo.conectar(vClaro2, vClaro5);
 		grafo.conectar(vCasaC, vClaro3, 4); grafo.conectar(vClaro3, vClaro5, 15);
@@ -34,7 +34,13 @@ public class BuscadorCaminoMasCortoCaperucitaTest {
 		 * 			C2    - 	C4
 		 */
 		
-		ListaGenerica<String> lisAct = new BuscadorCaminoMasCortoCaperucita(grafo).recorridoMasCortoYSeguro();
+		BuscadorCaminoMasCortoCaperucita bcmcc = new BuscadorCaminoMasCortoCaperucita(grafo);
+		
+		ListaGenerica<String> lisAct = bcmcc.recorridoMasSeguro();
+		System.out.println("El camino más seguro para caperucita es: " +
+								(lisAct.esVacia() ? "No se encontró un camino" : lisAct));
+		
+		lisAct = bcmcc.recorridoMasCortoYSeguro();
 		System.out.println("El camino más corto y seguro para caperucita es: " +
 								(lisAct.esVacia() ? "No se encontró un camino" : lisAct));
 	}

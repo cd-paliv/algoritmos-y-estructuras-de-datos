@@ -99,11 +99,4 @@ public class Recorridos<T> {
 		}
 	}
 	
-	/*
-	 * Retorna la lista de ciudades que se deben atravesar para ir de ciudad1 a ciudad2 en caso que se pueda 
-			llegar, si no retorna la lista vacía. (Sin tener en cuenta el combustible).
-	 
-	public ListaGenerica<String> devolverCamino(String ciudad1, String ciudad2){
-		
-	}*/
 }

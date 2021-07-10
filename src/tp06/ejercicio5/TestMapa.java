@@ -7,7 +7,7 @@ import tp06.ejercicio4.Recorridos;
 public class TestMapa {
 
 	public static void main(String[] args) {
-		// devolverCamino
+		
 		System.out.println("GRAFO:");
 		GrafoImplListAdy<String> grafo = new GrafoImplListAdy<String>();
 		
@@ -38,7 +38,8 @@ public class TestMapa {
 		lis = mTest.caminoSinCargarCombustible("E", "C", 5); //5 alcanza, 2 no
 		System.out.println("caminoSinCargarCombustible de E a C: " + (lis.esVacia() ? "No alcanza la nafta en tanque para terminar el camino" : lis));
 		
-		
+		lis = mTest.caminoConMenorCargaDeCombustible("E", "C", 2);
+		System.out.println("caminoConMenorCargaDeCombustible de E a C: " + (lis.esVacia() ? "No es posible terminar el camino" : lis));
 	}
 
 }
